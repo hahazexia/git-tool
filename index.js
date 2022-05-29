@@ -76,6 +76,52 @@ const testAction = async (name) => {
   }
 };
 
+const deleteAction = async () => {
+  // 初始化 git
+  const git = simpleGit({
+    baseDir: process.cwd(),
+    binary: 'git',
+  });
+  const branches = await git.branch();
+  const filterBranches = branches.all.filter(i => !i.includes('remotes'))
+    .map(i => {
+      return {
+        name: i,
+        disabled: i === 'master' || i === branches.current
+      }
+    });
+
+  inquirer
+    .prompt({
+      name: 'willDeleteBranches',
+      type: 'checkbox',
+      message: `choose which branches will be deleted`,
+      choices: filterBranches
+    })
+    .then(async (answers) => {
+      const res = answers.willDeleteBranches;
+      if (res.length === 0) {
+        console.log(`there is nothing will be deleted`);
+        process.exit();
+      } else {
+        for (const b of res) {
+          const deleteRes = await git.branch(['-d', b]);
+          console.log(deleteRes, 'deleteRes');
+          // if (deleteRes.result === 'success') {
+          //   console.log(`delete ${b} is success and no conflicts`);
+          // } else {
+          //   console.log('something is wrong, please check manually');
+          //   process.exit();
+          // }
+        }
+      }
+    })
+    .catch((error) => {
+      console.log(error, 'error');
+      process.exit();
+    });
+};
+
 // 查看版本号
 program.version(require('./package.json').version);
 
@@ -84,8 +130,12 @@ program.on('--help', () => {
 });
 
 program.command('test <name>')
-  .description('base on master to make a new test branch, then merge current branch into this new test branch')
+  .description('base on master to make a new test branch, then pick some branches merge into this new test branch')
   .action(testAction);
+
+program.command('delete')
+  .description('pick some local branches to delete')
+  .action(deleteAction);
 
 // 解析终端输入的参数
 program.parse(process.argv);
