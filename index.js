@@ -78,3 +78,5 @@ program.command('test <name>')
 // 解析终端输入的参数
 program.parse(process.argv);
 
+
+console.log('test,test')
