@@ -38,7 +38,7 @@ const testAction = async (name) => {
             process.exit();
           } else {
             for (const b of res) {
-              const mergeRes = await git.merge(b);
+              const mergeRes = await git.merge([b]);
               console.log(mergeRes, b, 'mergeRes b');
               console.log('哈哈哈');
             }
