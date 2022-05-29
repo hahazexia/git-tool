@@ -76,7 +76,7 @@ const testAction = async (name) => {
   }
 };
 
-const deleteAction = async () => {
+const deleteAction = async (options) => {
   // 初始化 git
   const git = simpleGit({
     baseDir: process.cwd(),
@@ -105,12 +105,20 @@ const deleteAction = async () => {
         process.exit();
       } else {
         for (const b of res) {
-          const deleteRes = await git.branch(['-d', b]);
-          if (deleteRes.success) {
-            console.log(`delete ${deleteRes.branch} is success and no conflicts`);
-          } else {
-            console.log('something is wrong, please check manually');
-            process.exit();
+          try {
+            let firstParam = '-d';
+            if (options.D) {
+              firstParam = '-D';
+            }
+            const deleteRes = await git.branch([firstParam, b]);
+            if (deleteRes.success) {
+              console.log(`delete ${deleteRes.branch} is success`);
+            } else {
+              console.log('something is wrong, please check manually');
+              process.exit();
+            }
+          } catch (err) {
+            console.log(`delete failed, the branch ${b} is not fully merged`)
           }
         }
       }
@@ -134,6 +142,7 @@ program.command('test <name>')
 
 program.command('delete')
   .description('pick some local branches to delete')
+  .option('-D', 'force to delete')
   .action(deleteAction);
 
 // 解析终端输入的参数
