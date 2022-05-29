@@ -2,6 +2,7 @@
 
 const { program } = require('commander');
 const simpleGit = require('simple-git');
+const inquirer = require('inquirer');
 
 const testAction = async (name) => {
   // 检查用户输入的 test 分支名是否合法
@@ -17,21 +18,49 @@ const testAction = async (name) => {
 
   // git status 查看当前分支状态
   const currentStatus = await git.status();
+  const branches = await git.branch();
 
-  console.log(currentStatus, 'currentStatus')
-  if (currentStatus.isClean()) { // 当前分支状态干净，可以继续后续流程
-    console.log(currentStatus, 'currentStatus');
-    if (currentStatus.current === 'master') { // 当前是 master 分支，直接新建 test 分支
-      const checkoutRes = await git.checkout(['-b', `${name}`]);
-      console.log(checkoutRes, 'master checkoutRes');
-    } else { // 当前不是 master 分支，切换到 master 分支后再新建 test 分支
-      const checkoutRes = await git.checkout(`master`);
-      console.log(checkoutRes, 'master checkoutRes 2');
+  // if (currentStatus.isClean()) { // 当前分支状态干净，可以继续后续流程
+    if (branches.current === name) { // 当前已经是 name 分支
+      console.log(`already on ${name}`);
+      const filterBranches = branches.all.filter(i => !i.includes('remotes'));
+      inquirer
+        .prompt({
+          name: 'willMergeBranches',
+          type: 'checkbox',
+          message: `choose which branches will merge into ${name}`,
+          choices: filterBranches
+        })
+        .then(async (answers) => {
+          const res = answers.willMergeBranches.filter(i => i !== 'master' && i !== `${name}`);
+          if (res.length === 0) {
+            console.log(`there is nothing will be merged in ${name}`);
+            process.exit();
+          } else {
+            for (const b of res) {
+              const mergeRes = await git.merge(b);
+              console.log(mergeRes, b, 'mergeRes b');
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error, 'error');
+          process.exit();
+        });
+    } else if (branches.all.includes(name)) { // 本地已存在 name 分支
+      console.log(`there has ${name}`);
+      await git.checkout([`${name}`]);
+
+    } else { // 本地还没有 name 分支
+      console.log(`there is no ${name}`);
+      await git.checkout(`master`);
+      await git.checkout(['-b', `${name}`]);
+
     }
-  } else { // 当前分支状态有未处理的文件，退出流程
-    console.log(`working tree not clean, please make sure all your changes is commited`);
-    process.exit();
-  }
+  // } else { // 当前分支状态有未处理的文件，退出流程
+  //   console.log(`working tree not clean, please make sure all your changes is commited`);
+  //   process.exit();
+  // }
 };
 
 // 查看版本号
