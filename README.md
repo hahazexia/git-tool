@@ -2,6 +2,12 @@
 
 a git tool to do some simple command.
 
+## install
+
+```bash
+npm i git-tool-hahazexia -g
+```
+
 ## test
 
 ```bash
