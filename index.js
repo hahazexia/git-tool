@@ -22,7 +22,7 @@ const testAction = async (name) => {
   if (currentStatus.isClean()) { // 当前分支状态干净，可以继续后续流程
     console.log(currentStatus, 'currentStatus');
     if (currentStatus.current === 'master') { // 当前是 master 分支，直接新建 test 分支
-      const checkoutRes = await git.checkout(`${name}`, { '-b': true});
+      const checkoutRes = await git.checkout(['-b', `${name}`]);
       console.log(checkoutRes, 'master checkoutRes');
     } else { // 当前不是 master 分支，切换到 master 分支后再新建 test 分支
       const checkoutRes = await git.checkout(`master`);
