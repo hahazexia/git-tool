@@ -106,13 +106,12 @@ const deleteAction = async () => {
       } else {
         for (const b of res) {
           const deleteRes = await git.branch(['-d', b]);
-          console.log(deleteRes, 'deleteRes');
-          // if (deleteRes.result === 'success') {
-          //   console.log(`delete ${b} is success and no conflicts`);
-          // } else {
-          //   console.log('something is wrong, please check manually');
-          //   process.exit();
-          // }
+          if (deleteRes.success) {
+            console.log(`delete ${deleteRes.branch} is success and no conflicts`);
+          } else {
+            console.log('something is wrong, please check manually');
+            process.exit();
+          }
         }
       }
     })
