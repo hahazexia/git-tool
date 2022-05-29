@@ -1,0 +1,31 @@
+{
+  "name": "git-tool",
+  "version": "1.0.0",
+  "description": "to do some simple git command",
+  "main": "index.js",
+  "bin": {
+    "git-tool": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hahazexia/git-tool.git"
+  },
+  "keywords": [
+    "git",
+    "tool"
+  ],
+  "author": "hahazexia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hahazexia/git-tool/issues"
+  },
+  "homepage": "https://github.com/hahazexia/git-tool#readme",
+  "dependencies": {
+    "commander": "^9.3.0",
+    "inquirer": "^8.2.4",
+    "simple-git": "^3.7.1"
+  }
+}
