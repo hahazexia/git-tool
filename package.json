@@ -1,6 +1,6 @@
 {
   "name": "git-tool-hahazexia",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "to do some simple git command",
   "main": "index.js",
   "bin": {
