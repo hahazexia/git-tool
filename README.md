@@ -12,7 +12,7 @@ npm i git-tool-hahazexia -g
 
 ```bash
 # base on master to make a new test branch, then pick some branches merge into this new test branch
-git-tool test
+git-tool test <branch name>
 ```
 
 ## delete
@@ -23,4 +23,11 @@ git-tool delete
 
 # -D force to delete
 git-tool delete -D
+```
+
+## check
+
+```bash
+# pick a local branch to checkout
+git-tool check
 ```

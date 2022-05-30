@@ -129,6 +129,56 @@ const deleteAction = async (options) => {
     });
 };
 
+const checkAction = async () => {
+  // 初始化 git
+  const git = simpleGit({
+    baseDir: process.cwd(),
+    binary: 'git',
+  });
+  const branches = await git.branch();
+  const filterBranches = branches.all.filter(i => !i.includes('remotes'))
+    .map(i => {
+      return {
+        name: i,
+        disabled: i === branches.current
+      }
+    });
+
+  
+  inquirer
+    .prompt({
+      name: 'willCheckBranches',
+      type: 'list',
+      message: `choose which branches you want to checkout`,
+      choices: filterBranches
+    })
+    .then(async (answers) => {
+      const res = answers.willCheckBranches;
+      if (!res) {
+        console.log(`there is nothing will be checkout`);
+        process.exit();
+      } else {
+        try {
+          const checkRes = await git.checkout([res]);
+          console.log(`${checkRes}`);
+        } catch (err) {
+          console.log(`checkout failed, the branch ${res}, err: ${err}`)
+        }
+
+        const branches = await git.branch();
+        const filterBranches = branches.all.filter(i => !i.includes('remotes'));
+
+        console.log(filterBranches.reduce((acc, i) => {
+          return `${acc}\n${branches.current === i ? '*' : ''} ${i}`;
+        }, ``));
+      }
+    })
+    .catch((error) => {
+      console.log(error, 'error');
+      process.exit();
+    });
+};
+
 // 查看版本号
 program.version(require('./package.json').version);
 
@@ -145,8 +195,10 @@ program.command('delete')
   .option('-D', 'force to delete')
   .action(deleteAction);
 
+program.command('check')
+  .description('pick some local branches to checkout')
+  .action(checkAction);
+
 // 解析终端输入的参数
 program.parse(process.argv);
 
-
-console.log('test,test')
