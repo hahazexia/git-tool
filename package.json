@@ -1,10 +1,10 @@
 {
-  "name": "git-tool-hahazexia",
+  "name": "gitity",
   "version": "1.0.4",
   "description": "to do some simple git command",
   "main": "index.js",
   "bin": {
-    "git-tool": "index.js"
+    "gitity": "index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
