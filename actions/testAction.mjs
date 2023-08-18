@@ -1,6 +1,6 @@
-const simpleGit = require('simple-git');
-const inquirer = require('inquirer');
-const { showBranches } = require('./util');
+import simpleGit from 'simple-git';
+import inquirer from 'inquirer';
+import showBranches from './util.mjs';
 
 const inquirerMerge = (name, git, branches) => {
   inquirer
@@ -19,7 +19,7 @@ const inquirerMerge = (name, git, branches) => {
         for (const b of res) {
           const mergeRes = await git.merge([b]);
           if (mergeRes.result === 'success' && mergeRes.conflicts.length === 0) {
-            console.log(`merge ${b} is success and no conflicts`);
+            console.log(`merge ${b} is successful and no conflicts`);
           } else {
             console.log(`\n`);
             console.log('something is wrong, please check manually');
@@ -81,4 +81,4 @@ const testAction = async (name) => {
   }
 };
 
-module.exports = testAction;
+export default testAction;

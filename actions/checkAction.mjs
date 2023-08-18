@@ -1,6 +1,6 @@
-const simpleGit = require('simple-git');
-const inquirer = require('inquirer');
-const { showBranches } = require('./util');
+import simpleGit from 'simple-git';
+import inquirer from 'inquirer';
+import showBranches from './util.mjs';
 
 const checkAction = async () => {
   // 初始化 git
@@ -50,4 +50,4 @@ const checkAction = async () => {
     });
 };
 
-module.exports = checkAction;
+export default checkAction;

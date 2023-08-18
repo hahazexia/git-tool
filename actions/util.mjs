@@ -8,6 +8,4 @@ const showBranches = async (git) => {
   }, ``));
 };
 
-module.exports = {
-  showBranches
-};
+export default showBranches;

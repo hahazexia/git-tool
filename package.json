@@ -3,8 +3,9 @@
   "version": "1.0.4",
   "description": "to do some simple git command",
   "main": "index.js",
+  "type": "module",
   "bin": {
-    "gitity": "index.js"
+    "gitity": "index.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/hahazexia/git-tool#readme",
   "dependencies": {
+    "chalk": "^5.3.0",
     "commander": "^9.3.0",
     "inquirer": "^8.2.4",
     "simple-git": "^3.7.1"

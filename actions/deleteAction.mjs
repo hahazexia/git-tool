@@ -1,6 +1,6 @@
-const simpleGit = require('simple-git');
-const inquirer = require('inquirer');
-const { showBranches } = require('./util');
+import simpleGit from 'simple-git';
+import inquirer from 'inquirer';
+import showBranches from './util.mjs';
 
 const deleteAction = async (options) => {
   // 初始化 git
@@ -39,7 +39,7 @@ const deleteAction = async (options) => {
             }
             const deleteRes = await git.branch([firstParam, b]);
             if (deleteRes.success) {
-              console.log(`delete ${deleteRes.branch} is success`);
+              console.log(`delete ${deleteRes.branch} is successful`);
             } else {
               console.log('something is wrong, please check manually');
               process.exit();
@@ -58,4 +58,4 @@ const deleteAction = async (options) => {
     });
 };
 
-module.exports = deleteAction;
+export default deleteAction;
