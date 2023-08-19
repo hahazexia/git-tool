@@ -31,3 +31,22 @@ gitity delete -D
 # pick a local branch to checkout
 gitity check
 ```
+
+## revert
+
+```bash
+# base on master make a new breanch
+git checkout master
+git pull
+git checkout -b feature/revert-back
+
+# pick a history revert commit to revert back
+gitity revert
+```
+
+## upd-sub
+
+```bash
+# equivalent to `git submodule update --init --recursive`
+gitity upd-sub
+```
