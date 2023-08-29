@@ -7,8 +7,14 @@ import deleteAction from './actions/deleteAction.mjs';
 import revertAction from './actions/revertAction.mjs';
 import updSubmodAction from './actions/updSubmodAction.mjs';
 import { promises } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const jsonString = await promises.readFile('./package.json', 'utf8');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const jsonString = await promises.readFile(path.join(__dirname, './package.json'), 'utf8');
 const packageJson = JSON.parse(jsonString);
 
 // 查看版本号
