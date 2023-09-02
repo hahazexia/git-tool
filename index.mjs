@@ -6,6 +6,7 @@ import checkAction from './actions/checkAction.mjs';
 import deleteAction from './actions/deleteAction.mjs';
 import revertAction from './actions/revertAction.mjs';
 import updSubmodAction from './actions/updSubmodAction.mjs';
+import pushAction from './actions/pushAction.mjs';
 import { promises } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,9 +42,13 @@ program.command('revert')
   .description('pick a master branch history commit to revert')
   .action(revertAction);
 
-program.command('upd-sub')
+program.command('usub')
   .description('update submodule')
   .action(updSubmodAction)
+
+program.command('push')
+  .description('git push if error will execute git push --set-upstream origin xxx')
+  .action(pushAction)
 
 // 解析终端输入的参数
 program.parse(process.argv);

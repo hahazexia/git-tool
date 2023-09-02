@@ -38,15 +38,38 @@ gitity check
 # base on master make a new breanch
 git checkout master
 git pull
-git checkout -b feature/revert-back
+git checkout -b feature/revert
 
-# pick a history revert commit to revert back
+# choose type
 gitity revert
+
+# `revert` means revert the revert commit to revert back
+# other means other commit exclude revert commit
+? choose which commit type you want to revert (Use arrow keys)
+❯ revert 
+  other 
+
+# after choose type, then choose which commit you want to revert
+? choose which commit you want to revert
+❯ xxxxxxx____2023-09-01T08:37:57+00:00____some commit message________username
+
+# then following 4 scenarios will occur:
+# 1. revert success
+# 2. there are some conflicts, you must resolve them by youself
+# 3. the commit you want to revert is a merge commit, you must pick -m options to continue
+# 4. unknown error, there will show error message from git
 ```
 
-## upd-sub
+## usub
 
 ```bash
 # equivalent to `git submodule update --init --recursive`
-gitity upd-sub
+gitity usub
+```
+
+## push
+
+```bash
+# git push if error will execute git push --set-upstream origin xxx
+gitity push
 ```
