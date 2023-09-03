@@ -66,7 +66,7 @@ const revertAction = async () => {
           const logs = await git.log();
           const revertCommits = logs.all.filter(commit => commit.message.includes('Revert'));
           revertCommitsObj = revertCommits.reduce((acc, i) => {
-            acc[`${chalk.bgRed.bold(i.hash.slice(0, 8))}____${chalk.yellow(i.date)}____${chalk.green(i.message)}____${chalk.blue(i.refs)}____${chalk.white(i.author_name)}`] = i;
+            acc[`${chalk.yellowBright.bgRed.bold(i.hash.slice(0, 8))}▓▓▓▓${chalk.yellow(i.date)}▓▓▓▓${chalk.green(i.message)}▓▓▓▓${chalk.magenta(i.refs)}▓▓▓▓${chalk.white(i.author_name)}`] = i;
             return acc;
           }, {});
           options = Object.keys(revertCommitsObj);
@@ -75,7 +75,7 @@ const revertAction = async () => {
           const logs = await git.log();
           const otherCommits = logs.all.filter(commit => !commit.message.includes('Revert'));
           otherCommitsObj = otherCommits.reduce((acc, i) => {
-            acc[`${chalk.bgRed.bold(i.hash.slice(0, 8))}____${chalk.yellow(i.date)}____${chalk.green(i.message)}____${chalk.blue(i.refs)}____${chalk.white(i.author_name)}`] = i;
+            acc[`${chalk.yellowBright.bgRed.bold(i.hash.slice(0, 8))}▓▓▓▓${chalk.yellow(i.date)}▓▓▓▓${chalk.green(i.message)}▓▓▓▓${chalk.magenta(i.refs)}▓▓▓▓${chalk.white(i.author_name)}`] = i;
             return acc;
           }, {});
           options = Object.keys(otherCommitsObj);
@@ -123,7 +123,7 @@ const revertAction = async () => {
               // console.log(err.message, 'err.message');
               if (err.message.includes('commit with multiple parents') || err.message.includes('-m option')) {
                 console.log('\n'.repeat(1));
-                console.error(`${chalk.red('error')}: commit ${chalk.bgRed.bold(String(commitId).slice(0, 8))} is a merge but no ${chalk.green('-m option')} was given`);
+                console.error(`${chalk.red('error')}: commit ${chalk.yellowBright.bgRed.bold(String(commitId).slice(0, 8))} is a merge but no ${chalk.green('-m option')} was given`);
                 const mergeCommitMsg = await git.raw([
                   'log',
                   '--merges',
@@ -138,11 +138,13 @@ const revertAction = async () => {
                 const merge2Branch = extractBranchNames(commitObj.message);
 
                 console.log('\n'.repeat(1));
-                console.log(`${chalk.red.bgYellow('now here is the three commit hash:')}`);
+                console.log(`${chalk.yellowBright.bgRed('now here is the three commit hash:')}`);
                 console.log(`${chalk.yellow('merge commit')}: ${chalk.bgRed.bold(mergeCommitMsgArr[0])}`);
-                console.log(`${chalk.yellow('parent commit 1')}: ${chalk.bgRed.bold(mergeCommitMsgArr[1])} ${merge2Branch?.[1] ? `, corresponding branch is ${chalk.green(merge2Branch[1])}` : ''}`);
-                console.log(`${chalk.yellow('parent commit 2')}: ${chalk.bgRed.bold(mergeCommitMsgArr[2])} ${merge2Branch?.[0] ? `, corresponding branch is ${chalk.green(merge2Branch[0])}` : ''}`);
+                console.log(`${chalk.yellow('parent commit 1')}: ${chalk.yellowBright.bgRed.bold(mergeCommitMsgArr[1])} ${merge2Branch?.[1] ? `, corresponding branch is ${chalk.green(merge2Branch[1])}` : ''}`);
+                console.log(`${chalk.yellow('parent commit 2')}: ${chalk.yellowBright.bgRed.bold(mergeCommitMsgArr[2])} ${merge2Branch?.[0] ? `, corresponding branch is ${chalk.green(merge2Branch[0])}` : ''}`);
                 console.log('\n'.repeat(1));
+                
+                console.log(`${chalk.whiteBright.bgMagenta(`if you don't know how to choose -m option, just choose -m 1, \nbecause usually what you want to do is remove the changes that have been merged into the master branch. \nHere, I assume your target branch is master.`)}`);
 
                 const dashMOptionsObj = {
                   [`${chalk.red('-m 1')} aka ${chalk.red('parent commit 1')}: ${chalk.green(merge2Branch[1])}`]: mergeCommitMsgArr[1],
