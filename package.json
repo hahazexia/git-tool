@@ -1,6 +1,6 @@
 {
   "name": "gitity",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "to do some simple git command",
   "main": "index.js",
   "type": "module",
