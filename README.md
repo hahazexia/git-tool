@@ -35,7 +35,7 @@ gitity check
 ## revert
 
 ```bash
-# base on master make a new breanch
+# base on master make a new branch
 git checkout master
 git pull
 git checkout -b feature/revert
